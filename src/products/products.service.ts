@@ -18,9 +18,7 @@ export class ProductsService {
       price,
     });
     const product = await newProduct.save();
-    console.log(product);
-
-    return 'Product added successfully';
+    return product._id;
   }
 
   getAllProducts() {

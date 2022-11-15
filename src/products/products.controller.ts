@@ -11,18 +11,20 @@ import {
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly ProductsService: ProductsService) {}
+  constructor(private readonly ProductsService: ProductsService) { }
   @Post()
-  addProduct(
+  async addProduct(
     @Body('title') prodTitle: string,
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number,
   ) {
-    const generatedProdId = this.ProductsService.insertProduct(
+    const generatedProdId = await this.ProductsService.insertProduct(
       prodTitle,
       prodDesc,
       prodPrice,
     );
+
+    console.log(generatedProdId);
     return { id: generatedProdId };
   }
 
