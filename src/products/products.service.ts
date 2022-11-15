@@ -21,8 +21,9 @@ export class ProductsService {
     return product._id;
   }
 
-  getAllProducts() {
-    return [...this.products];
+  async getAllProducts() {
+    const allProducts = await this.productModel.find({}).exec();
+    return [...allProducts];
   }
 
   getAProduct(prodId: string) {

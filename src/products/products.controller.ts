@@ -23,8 +23,6 @@ export class ProductsController {
       prodDesc,
       prodPrice,
     );
-
-    console.log(generatedProdId);
     return { id: generatedProdId };
   }
 
