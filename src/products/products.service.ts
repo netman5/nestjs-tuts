@@ -26,9 +26,14 @@ export class ProductsService {
     return [...allProducts];
   }
 
-  getAProduct(prodId: string) {
-    const product = this.findProduct(prodId)[0];
-    return { ...product };
+  async getAProduct(prodId: string) {
+    const product = await this.productModel.findById(prodId).exec();
+    return {
+      id: product._id,
+      title: product.title,
+      description: product.description,
+      price: product.price,
+    };
   }
 
   updateSingleProduct(
