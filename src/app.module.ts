@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductsModule } from './products/products.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AppService } from './app.service';
     MongooseModule.forRoot(
       `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@api-db.ofcj2.mongodb.net/nestjs-demo?retryWrites=true&w=majority`,
     ),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
