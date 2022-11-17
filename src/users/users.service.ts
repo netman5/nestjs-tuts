@@ -1,16 +1,13 @@
-import { UserSchema } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Model } from 'mongoose';
+import { User } from './model/user.model';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel('CreateUserDto')
-    private readonly UserSchema: Model<CreateUserDto>,
-  ) { }
+  constructor(@InjectModel('User') private readonly UserSchema: Model<User>) { }
 
   async create(createUserDto: CreateUserDto) {
     const newUser = new this.UserSchema(createUserDto);
@@ -18,8 +15,9 @@ export class UsersService {
     return user._id;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.UserSchema.find().exec();
+    return users;
   }
 
   findOne(id: number) {
