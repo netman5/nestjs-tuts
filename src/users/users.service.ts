@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -20,15 +20,44 @@ export class UsersService {
     return users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.findUser(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const { name, email, password } = updateUserDto;
+    const user = await this.UserSchema.findOneAndUpdate(
+      { _id: id },
+      { name, email, password },
+      { new: true },
+    );
+
+    try {
+      if (!user) {
+        throw new NotFoundException('Could not find user.');
+      }
+      return user;
+    } catch (error) {
+      throw new NotFoundException('Could not find user.');
+    }
+    // return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.UserSchema.findByIdAndDelete(id);
+    return user._id;
+  }
+
+  private async findUser(id: string): Promise<User> {
+    let user: User;
+    try {
+      user = await this.UserSchema.findById(id).exec();
+      if (!user) {
+        throw new NotFoundException('Could not find user.');
+      }
+      return user;
+    } catch (error) {
+      throw new NotFoundException('Could not find user.');
+    }
   }
 }
