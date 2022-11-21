@@ -40,7 +40,6 @@ export class UsersService {
     } catch (error) {
       throw new NotFoundException('Could not find user.');
     }
-    // return user;
   }
 
   async remove(id: string) {

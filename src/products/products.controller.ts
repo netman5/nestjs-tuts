@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 
-@Controller('products')
+@Controller('api/v1/products')
 export class ProductsController {
   constructor(private readonly ProductsService: ProductsService) { }
   @Post()
