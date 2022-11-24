@@ -42,7 +42,7 @@ export class ProductsService {
     desc: string,
     price: number,
   ) {
-    const [product, index] = this.findProduct(prodId);
+    const [product, idx] = this.findProduct(prodId);
     const updatedProduct = { ...product };
 
     if (title) {
@@ -57,20 +57,11 @@ export class ProductsService {
       updatedProduct.price = price;
     }
 
-    this.products[index] = updatedProduct;
+    this.products[idx] = updatedProduct;
   }
 
-  deleteProduct(prodId: string) {
-    const index = this.findProduct(prodId)[1];
-    this.products.splice(index, 1);
-  }
-
-  private findProduct(id: string): [Product, number] {
-    const productIdx = this.products.findIndex((prod) => prod.id === id);
-    const product = this.products[productIdx];
-    if (!product) {
-      throw new NotFoundException('Could not find product.');
-    }
-    return [product, productIdx];
+  async deleteProduct(prodId: string) {
+    const index = await this.productModel.findOneAndRemove(prodId).exec();
+    return index;
   }
 }
